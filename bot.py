@@ -25,15 +25,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Load configuration and secrets safely
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except ImportError:
-    pass
+from dotenv import load_dotenv
+load_dotenv()
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "8606731653:AAFGIO_iUok_RQVCSpdQKbKh4o5-fI6jL5o")
-if not BOT_TOKEN or "8606731653" in BOT_TOKEN and not os.getenv("BOT_TOKEN"):
-    logger.warning("Using hardcoded fallback BOT_TOKEN. For production, please configure the 'BOT_TOKEN' environment variable.")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+if not BOT_TOKEN:
+    logger.critical("BOT_TOKEN is not set in the environment or .env file.")
+    raise SystemExit("Error: BOT_TOKEN is required. Please define it in a .env file.")
 
 # Initialize core services
 bot = Bot(token=BOT_TOKEN)
